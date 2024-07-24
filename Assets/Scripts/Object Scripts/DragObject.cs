@@ -19,12 +19,12 @@ public class DragObject : MonoBehaviour
     // Record the difference between the objects centre, and the clicked point on the camera plane.
     offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
     dragging = true;
-    gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+    // gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
   }
 
   private void OnMouseUp() {
     // Stop dragging.
     dragging = false;
-    gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+    // gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
   }
 }
