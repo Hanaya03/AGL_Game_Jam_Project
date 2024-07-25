@@ -5,14 +5,16 @@ using Random = UnityEngine.Random;
 
 public class ObjectDisassembly : MonoBehaviour
 {
-
+    [SerializeField] private ObjectAssembly objectAssembler;
     [SerializeField] private int width;
     [SerializeField] private int length;
     [SerializeField] private GameObject unitSquare;
     [SerializeField] private GameObject placeholder;
     [SerializeField] private GameObject[] unitArray;
     [SerializeField] private GameObject[] pieceArray;
+    [SerializeField] private LayerMask playerLayer;
     private int counter;
+    private bool isBroken= false;
     
     private enum Shape
     {
@@ -38,12 +40,15 @@ public class ObjectDisassembly : MonoBehaviour
         counter = 0;
         width = Mathf.RoundToInt(gameObject.transform.localScale.x);
         length = Mathf.RoundToInt(gameObject.transform.localScale.y);
-        Disassemble();
-        Squarizer();
     }
 
     void Update()
     {
+        if(!isBroken &&  Physics2D.OverlapCircle(gameObject.transform.position, 5f, playerLayer))
+        {
+            Disassemble();
+            Squarizer();
+        }
     }
     
     private void ShapeChooserThrees(int index1, int index2, int index3)
@@ -289,9 +294,11 @@ public class ObjectDisassembly : MonoBehaviour
         {
             case Shape.Box:
             {
+                objectAssembler.increasePieceCounter();
                 var box = Instantiate(placeholder);
                 box.name = new string("Object Piece");
                 var middleBlock = blockArray[4];
+                objectAssembler.addCoordToList(middleBlock.transform.position);
                 box.transform.position = middleBlock.transform.position;
                 for (int i = 0; i < 9; i++)
                 {
@@ -316,8 +323,10 @@ public class ObjectDisassembly : MonoBehaviour
             }
             case Shape.Cross:
             {
+                objectAssembler.increasePieceCounter();
                 var cross = Instantiate(placeholder);
                 cross.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[4].transform.position);
                 cross.transform.position = blockArray[4].transform.position;
                 for (var i = 0; i < 9; i++)
                 {
@@ -342,8 +351,10 @@ public class ObjectDisassembly : MonoBehaviour
             }
             case Shape.Bucket:
             {
+                objectAssembler.increasePieceCounter();
                 var shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[4].transform.position);
                 shape.transform.position = blockArray[4].transform.position;
                 
                 var block = Instantiate(placeholder);
@@ -370,8 +381,10 @@ public class ObjectDisassembly : MonoBehaviour
             }
             case Shape.Tee:
             {
+                objectAssembler.increasePieceCounter();
                 var shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[4].transform.position);
                 shape.transform.position = blockArray[4].transform.position;
                 
                 var block1 = Instantiate(placeholder);
@@ -407,8 +420,10 @@ public class ObjectDisassembly : MonoBehaviour
             }
             case Shape.Boot:
             {
+                objectAssembler.increasePieceCounter();
                 var shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[4].transform.position);
                 shape.transform.position = blockArray[4].transform.position;
 
                 var block = Instantiate(placeholder);
@@ -434,8 +449,10 @@ public class ObjectDisassembly : MonoBehaviour
             }
             case Shape.Boat:
             {
+                objectAssembler.increasePieceCounter();
                 var shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[4].transform.position);
                 shape.transform.position = blockArray[4].transform.position;
                 int num = Random.Range(1, 3);
                 GameObject block1 = null;
@@ -515,8 +532,10 @@ public class ObjectDisassembly : MonoBehaviour
             }
             case Shape.TopHat:
             {
+                objectAssembler.increasePieceCounter();
                 var shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[7].transform.position);
                 shape.transform.position = blockArray[7].transform.position;
                 int num = Random.Range(1, 3);
                 GameObject block1 = null;
@@ -604,9 +623,11 @@ public class ObjectDisassembly : MonoBehaviour
             }   
             case Shape.Raft:
             {
+                objectAssembler.increasePieceCounter();
                 var shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
                 var middleBlock = blockArray[1];
+                objectAssembler.addCoordToList(middleBlock.transform.position);
                 shape.transform.position = middleBlock.transform.position;
                 for (int i = 0; i < 3; i++)
                 {
@@ -618,9 +639,11 @@ public class ObjectDisassembly : MonoBehaviour
             }    
             case Shape.Platform:
             {
+                objectAssembler.increasePieceCounter();
                 var shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
                 var middleBlock = blockArray[0];
+                objectAssembler.addCoordToList(middleBlock.transform.position);
                 shape.transform.position = middleBlock.transform.position;
                 for (int i = 0; i < 2; i++)
                 {
@@ -632,9 +655,11 @@ public class ObjectDisassembly : MonoBehaviour
             }
             case Shape.Block:
             {
+                objectAssembler.increasePieceCounter();
                 var shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
                 var middleBlock = blockArray[0];
+                objectAssembler.addCoordToList(middleBlock.transform.position);
                 shape.transform.position = middleBlock.transform.position;
                 blockArray[0].transform.SetParent(shape.transform);
                 blockArray[0].transform.localScale = new Vector2(1, 1);
@@ -662,8 +687,10 @@ public class ObjectDisassembly : MonoBehaviour
         switch (chosenShape)
         {
             case Shape.TopHat:
+                objectAssembler.increasePieceCounter();
                 shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[4].transform.position);
                 shape.transform.position = blockArray[4].transform.position;
                 block1 = null;
                 block2 = null;
@@ -703,8 +730,10 @@ public class ObjectDisassembly : MonoBehaviour
                 }
                 break;
             case Shape.Boat:
+                objectAssembler.increasePieceCounter();
                 shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[4].transform.position);
                 shape.transform.position = blockArray[4].transform.position;
                 GameObject block = null;
                 block = Instantiate(placeholder);
@@ -728,8 +757,10 @@ public class ObjectDisassembly : MonoBehaviour
                 }
                 break;
             case Shape.Raft:
+                objectAssembler.increasePieceCounter();
                 shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[4].transform.position);
                 shape.transform.position = blockArray[4].transform.position;
                 block1 = null;
                 block2 = null;
@@ -767,8 +798,10 @@ public class ObjectDisassembly : MonoBehaviour
                 }
                 break;
             case Shape.Shoe:
+                objectAssembler.increasePieceCounter();
                 shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[2].transform.position);
                 shape.transform.position = blockArray[2].transform.position;
                 block1 = null;
                 block1 = Instantiate(placeholder);
@@ -792,8 +825,10 @@ public class ObjectDisassembly : MonoBehaviour
                 }
                 break;
             case Shape.Platform:
+                objectAssembler.increasePieceCounter();
                 shape = Instantiate(placeholder);
                 shape.name = new string("Object Piece");
+                objectAssembler.addCoordToList(blockArray[2].transform.position);
                 shape.transform.position = blockArray[2].transform.position;
 
                 var num = Random.Range(0, 2);
@@ -865,6 +900,7 @@ public class ObjectDisassembly : MonoBehaviour
 
     private void Squarizer()
     {
+        //if width and length are divisible by 3, 
         if (width % 3 == 0 && length % 3 == 0)
         {
             var index1 = 0;
@@ -885,8 +921,7 @@ public class ObjectDisassembly : MonoBehaviour
                 index2 += 2 * width;
                 index3 += 2 * width;
             }
-        }
-        else if ((width % 3 == 0 && length > 2) || (length % 3 == 0 && width > 2))
+        }else if ((width % 3 == 0 && length > 2) || (length % 3 == 0 && width > 2))
         {
             if (length % 3 == 0)
             {
@@ -911,11 +946,11 @@ public class ObjectDisassembly : MonoBehaviour
 
                  if (width % 3 == 1)
                  {
-                     ShaperChooserOnes(width - 1, false);
+                    ShaperChooserOnes(width - 1, false);
                  }
                  else if (width % 3 == 2)
                  {
-                     ShapeChooserTwos(width - 2, width - 1, false);
+                    ShapeChooserTwos(width - 2, width - 1, false);
                  }
             }
             if (width % 3 == 0)
@@ -948,8 +983,7 @@ public class ObjectDisassembly : MonoBehaviour
                     ShapeChooserTwos(width * (length - 2), width * (length - 1), true);
                 }
             }
-        }
-        else if (width > 3 & length > 3)
+        }else if (width > 3 & length > 3)
         {
             var index1 = 0;
             var index2 = width;
@@ -997,8 +1031,8 @@ public class ObjectDisassembly : MonoBehaviour
     {
         var positioningArray = new Vector2[width , length];
         float positionX, startingX, positionY;
-        startingX = (float)(-(width / 2) + 0.5);
-        positionY = (float)(length / 2 - 0.5);
+        startingX = (float)(-(width / 2) + 0.5 + gameObject.transform.position.x);
+        positionY = (float)(length / 2 - 0.5 + gameObject.transform.position.y);
         positionX = startingX;
         // ReSharper disable once PossibleLossOfFraction
         

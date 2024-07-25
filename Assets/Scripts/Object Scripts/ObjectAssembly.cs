@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class ObjectAssembly : MonoBehaviour
 {
-    private bool isBroken = false;
-    private bool isAssembled = true;
+    private int pieceCounter;
+    LinkedList<Vector3> coordList = new LinkedList<Vector3>();
     // Start is called before the first frame update
     void Start()
     {
-        isAssembled = false;
     }
 
     // Update is called once per frame
@@ -18,16 +17,13 @@ public class ObjectAssembly : MonoBehaviour
 
     }
 
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-        // If the Collider2D component is enabled on the collided object
-        if (coll.gameObject.layer ==  LayerMask.NameToLayer("Ground") && !isAssembled)
-        {
-            isAssembled = true;
-            Debug.Log("Valid Collision!");
-            coll.gameObject.GetComponent<DragObject>().enabled = false;
-            coll.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-            coll.gameObject.GetComponent<Transform>().position = gameObject.GetComponent<Transform>().position;
-        }
+    public void increasePieceCounter(){
+        pieceCounter++;
+        Debug.Log(pieceCounter);
+    }
+
+    public void addCoordToList(Vector3 coordToAdd){
+        coordList.AddLast(coordToAdd);
+        Debug.Log(coordToAdd);
     }
 }

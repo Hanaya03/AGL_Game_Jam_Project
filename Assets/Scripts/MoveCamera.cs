@@ -26,7 +26,7 @@ public class MoveCamera : MonoBehaviour
     {
             timeToInc = Time.time + 1;
             camPosTarget = camPos.position + camPosIncrement;
-            camPos.position = Vector3.SmoothDamp(camPos.position, camPosTarget, ref currentVelocity, 1f);
+            camPos.position = Vector3.SmoothDamp(camPos.position, camPosTarget, ref currentVelocity, .5f);
 
     }
 }
